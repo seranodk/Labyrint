@@ -2,7 +2,7 @@
 
 Et labyrintspil til browser og mobil med klassisk jagt-gameplay: spis alle prikker, undgå de fire jægere, og spis dem, når du har taget en kraftpille.
 
-**Version 0.2.0**
+**Version 0.2.1**
 
 ## Spil som app (fuld skærm)
 
@@ -13,7 +13,7 @@ GitHub Pages slås til under Settings → Pages → branch `main`, mappe `/ (roo
 ## Spil
 
 - **Browser:** piletaster eller WASD, P for pause
-- **Mobil:** joystick nederst på skærmen
+- **Mobil:** fire retningsknapper nederst på skærmen
 
 ## Indhold
 
@@ -32,6 +32,7 @@ GitHub Pages slås til under Settings → Pages → branch `main`, mappe `/ (roo
 
 Versionsnavne følger 0.x.x: en større ændring hæver det første x, en mindre ændring det andet.
 
+- **0.2.1** – Joysticket er erstattet af fire firkantede retningsknapper, så retningen altid er entydig.
 - **0.2.0** – Kan installeres som app: fuld skærm, ikon og offline-spil. Fuldskærmsknap, automatisk fuld skærm ved start på telefoner, og skærmen slukker ikke midt i et spil.
 - **0.1.4** – Rettet: spilleren kunne sidde fast i kryds med fire veje. Navnet ændret til Labyrint.
 - **0.1.3** – Joysticket læner sig mod tommelfingerens retning og undgår at køre fast mod mure.
