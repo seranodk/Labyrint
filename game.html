@@ -44,9 +44,14 @@ canvas#lives{width:120px;height:24px}
 body.touch .pad{display:grid}
 body.touch footer{display:flex;flex-direction:column;align-items:center;gap:4px}
 body.touch footer .side{align-self:flex-start}
-.menu{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;overflow:auto;padding:8px;box-sizing:border-box;
+.menu{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;overflow:hidden;padding:8px;box-sizing:border-box;
   background:color-mix(in srgb,var(--bg) 78%,transparent);backdrop-filter:blur(3px);-webkit-backdrop-filter:blur(3px)}
-.card{width:min(100%,460px);box-sizing:border-box;background:var(--panel);border:1px solid var(--line);border-radius:16px;padding:18px;display:grid;gap:14px;max-height:100%;overflow:auto}
+.card{width:min(100%,460px);box-sizing:border-box;background:var(--panel);border:1px solid var(--line);border-radius:16px;padding:18px;display:grid;gap:14px;max-height:100%;overflow:hidden}
+body.inmenu footer{display:none!important}
+@media (max-height:740px){.card{padding:14px;gap:10px}.card h2{margin-bottom:6px}.lead{font-size:13px;line-height:1.4}}
+.chip span{max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+@media (max-width:360px){.chip{font-size:10.5px}.chip small{font-size:9px}}
+@media (max-height:620px){.lead{display:none}.chip canvas{max-width:48px}.chip{padding:4px 3px}}
 .card h1{margin:0;font-family:var(--display);font-weight:400;font-size:clamp(20px,6vw,28px);color:var(--accent);text-wrap:balance}
 .mhead{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
 .lead{margin:0;line-height:1.45;color:var(--fg);max-width:60ch}
@@ -69,7 +74,7 @@ body.touch footer .side{align-self:flex-start}
 
 <div class="app">
   <header>
-    <div class="brand"><b>Labyrint</b><span class="ver" id="verTop">0.2.1</span></div>
+    <div class="brand"><b>Labyrint</b><span class="ver" id="verTop">0.2.2</span></div>
     <div class="stats">
       <div class="stat"><span>Point</span><strong id="sScore">0</strong></div>
       <div class="stat"><span>Rekord</span><strong id="sHi">0</strong></div>
@@ -85,7 +90,7 @@ body.touch footer .side{align-self:flex-start}
     <div class="msg" id="msg" hidden></div>
     <div class="menu" id="menu">
       <div class="card">
-        <div class="mhead"><h1>Labyrint</h1><span class="ver" id="verMenu">0.2.1</span></div>
+        <div class="mhead"><h1>Labyrint</h1><span class="ver" id="verMenu">0.2.2</span></div>
         <p class="lead" id="lead">Spis alt på banen og undgå de fire jægere. De store prikker vender jagten, så du kan spise dem.</p>
         <section><h2>Tema</h2><div class="grid5" id="themes"></div></section>
         <section><h2>Banestørrelse</h2><div class="grid5" id="sizes"></div></section>
@@ -95,7 +100,6 @@ body.touch footer .side{align-self:flex-start}
           <button class="btn" id="resumeBtn" hidden>Fortsæt</button>
         </div>
         <p class="help" id="installHint" hidden>Spil i fuld skærm som en app: åbn spillet i Safari eller Chrome og vælg <b>Føj til hjemmeskærm</b>.</p>
-        <p class="help">Browser: piletaster eller WASD, P for pause. Mobil: tryk på de fire retningsknapper. Du kan trykke lidt før et sving, så drejer figuren ved næste åbning.</p>
       </div>
     </div>
   </main>
@@ -112,7 +116,7 @@ body.touch footer .side{align-self:flex-start}
 
 <script>
 (()=>{
-const VERSION='0.2.1';
+const VERSION='0.2.2';
 const $=id=>document.getElementById(id);
 const cv=$('cv'), ctx=cv.getContext('2d'), stage=$('stage');
 const TAU=Math.PI*2;
@@ -700,14 +704,14 @@ function drawLives(){
 const menu=$('menu'),lead=$('lead'),startBtn=$('startBtn'),resumeBtn=$('resumeBtn');
 let sizeAtPause=null;
 function openMenu(text,startLabel,canResume){
-  G.paused=true;menu.hidden=false;
+  G.paused=true;menu.hidden=false;document.body.classList.add('inmenu');
   if(text)lead.textContent=text;
   startBtn.textContent=startLabel||'Start spil';
   resumeBtn.hidden=!canResume;sizeAtPause=S.size;
   $('pauseBtn').textContent='Menu';
   setTimeout(()=>(canResume?resumeBtn:startBtn).focus({preventScroll:true}),0);
 }
-function closeMenu(){menu.hidden=true;G.paused=false;$('pauseBtn').textContent='Pause';cv.focus?.()}
+function closeMenu(){menu.hidden=true;document.body.classList.remove('inmenu');G.paused=false;$('pauseBtn').textContent='Pause';cv.focus?.()}
 function buildMenu(){
   const tw=$('themes');tw.innerHTML='';
   for(const t of THEMES){
